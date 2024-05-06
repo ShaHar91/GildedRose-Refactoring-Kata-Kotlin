@@ -37,6 +37,11 @@ class GildedRose(var items: List<Item>) {
                 }
             }
 
+            // Dirty fix to decrease the quality for a second time of the conjured items
+            if (items[i].name == "Conjured Mana Cake" && items[i].quality > 0) {
+                items[i].quality = items[i].quality - 1
+            }
+
             if (items[i].name != "Sulfuras, Hand of Ragnaros") {
                 // any item "Except" Sulfuras should decrease the sellIn date
                 items[i].sellIn = items[i].sellIn - 1
@@ -55,15 +60,9 @@ class GildedRose(var items: List<Item>) {
                         // When the concert is finished, the quality should be set to 0
                         items[i].quality = items[i].quality - items[i].quality
                     }
-                } else {
-                    // This is wrong according to the requirements, Aged brie should NOT be increased a second time!
-                    if (items[i].quality < 50) {
-                        items[i].quality = items[i].quality + 1
-                    }
                 }
             }
         }
     }
-
 }
 
