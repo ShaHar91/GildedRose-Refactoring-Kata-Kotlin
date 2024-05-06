@@ -8,38 +8,40 @@ internal class GildedRoseTest {
 
     @Test
     fun `day passed, values get lowered`() {
-        val items = listOf(Item("foo", 10, 50))
+        val items = listOf(Item("Random item", 10, 50))
         val app = GildedRose(items)
 
         app.updateQuality()
 
-        assertEquals(49, app.items[0].quality)
+        // Assert after day 1
+        assertEquals(49, app.items.first().quality)
 
         app.updateQuality()
 
-        assertEquals(48, app.items[0].quality)
+        // Assert after day 2
+        assertEquals(48, app.items.first().quality)
     }
 
     @Test
     fun `sell by date has been passed, quality passed twice as fast`() {
-        val items = listOf(Item("foo", -10, 50))
+        val items = listOf(Item("Random item", -10, 50))
         val app = GildedRose(items)
 
         app.updateQuality()
 
-        assertEquals(48, app.items[0].quality)
+        assertEquals(48, app.items.first().quality)
     }
 
     @Test
     fun `quality can never be negative`() {
-        val items = listOf(Item("foo", -10, 3))
+        val items = listOf(Item("Random item", -10, 3))
         val app = GildedRose(items)
 
         // 2 days passed
         app.updateQuality()
         app.updateQuality()
 
-        assertEquals(0, app.items[0].quality)
+        assertEquals(0, app.items.first().quality)
     }
 
     @Test
@@ -49,7 +51,7 @@ internal class GildedRoseTest {
 
         app.updateQuality()
 
-        assertEquals(26, app.items[0].quality)
+        assertEquals(26, app.items.first().quality)
     }
 
     @Test
@@ -64,7 +66,7 @@ internal class GildedRoseTest {
         app.updateQuality()
         app.updateQuality()
 
-        assertEquals(50, app.items[0].quality)
+        assertEquals(50, app.items.first().quality)
         assertEquals(50, app.items[1].quality)
     }
 
@@ -81,7 +83,7 @@ internal class GildedRoseTest {
         app.updateQuality()
         app.updateQuality()
 
-        assertEquals(items.first(), app.items[0])
+        assertEquals(80, app.items.first().quality)
     }
 
     @Test
@@ -91,7 +93,7 @@ internal class GildedRoseTest {
 
         app.updateQuality()
 
-        assertEquals(26, app.items[0].quality)
+        assertEquals(26, app.items.first().quality)
     }
 
     @Test
@@ -103,12 +105,12 @@ internal class GildedRoseTest {
 
         app.updateQuality()
 
-        assertEquals(12, app.items[0].quality)
+        assertEquals(12, app.items.first().quality)
     }
 
 
     @Test
-    fun `Backstage pass increase by 3 if less than 10 days remaining`() {
+    fun `Backstage pass increase by 3 if less than 5 days remaining`() {
         val items = listOf(
             Item("Backstage passes to a TAFKAL80ETC concert", 5, 10)
         )
@@ -116,7 +118,19 @@ internal class GildedRoseTest {
 
         app.updateQuality()
 
-        assertEquals(13, app.items[0].quality)
+        assertEquals(13, app.items.first().quality)
+    }
+
+    @Test
+    fun `Backstage pass quality is 0 when not sold in time`() {
+        val items = listOf(
+            Item("Backstage passes to a TAFKAL80ETC concert", 0, 30)
+        )
+        val app = GildedRose(items)
+
+        app.updateQuality()
+
+        assertEquals(0, app.items.first().quality)
     }
 
     @Test
@@ -128,6 +142,6 @@ internal class GildedRoseTest {
 
         app.updateQuality()
 
-        assertEquals(8, app.items[0].quality)
+        assertEquals(8, app.items.first().quality)
     }
 }
